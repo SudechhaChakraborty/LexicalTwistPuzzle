@@ -14,7 +14,7 @@ public class LexicalTwistPuzzle {
         System.out.print("Enter second word: ");
         String secondWord = scanner.nextLine();
 
-        // UC3 Validation
+        // ✅ UC3 Validation
         if (firstWord.trim().contains(" ")) {
             System.out.println(firstWord + " is an invalid word");
             scanner.close();
@@ -27,11 +27,12 @@ public class LexicalTwistPuzzle {
             return;
         }
 
+        // Reverse first word
         String reversed = new StringBuilder(firstWord).reverse().toString();
 
+        // ✅ UC5 (if reverse match)
         if (reversed.equalsIgnoreCase(secondWord)) {
 
-            // UC5 Transformation
             String transformed = reversed
                     .toLowerCase()
                     .replaceAll("[aeiou]", "@");
@@ -40,7 +41,7 @@ public class LexicalTwistPuzzle {
 
         } else {
 
-            // UC6 Combine & Count
+            // ✅ UC6 Combine & Count
             String combined = (firstWord + secondWord).toUpperCase();
 
             int vowels = 0;
@@ -55,10 +56,43 @@ public class LexicalTwistPuzzle {
                 }
             }
 
-            System.out.println("Vowels: " + vowels);
-            System.out.println("Consonants: " + consonants);
+            // ✅ UC7 Rule-Based Output
+
+            if (vowels > consonants) {
+                printFirstTwoUnique(combined, true);
+            }
+            else if (consonants > vowels) {
+                printFirstTwoUnique(combined, false);
+            }
+            else {
+                System.out.println("Vowels and consonants are equal");
+            }
         }
 
         scanner.close();
+    }
+
+    // ✅ Helper Method for UC7
+    private static void printFirstTwoUnique(String word, boolean vowelMode) {
+
+        String seen = "";
+        int count = 0;
+
+        for (char ch : word.toCharArray()) {
+
+            boolean isVowel = "AEIOU".indexOf(ch) != -1;
+
+            if (vowelMode == isVowel && seen.indexOf(ch) == -1) {
+
+                System.out.print(ch + " ");
+                seen += ch;
+                count++;
+            }
+
+            if (count == 2)
+                break;
+        }
+
+        System.out.println();
     }
 }
